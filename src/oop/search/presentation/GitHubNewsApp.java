@@ -12,7 +12,9 @@ public class GitHubNewsApp {
     }
 
     public void run() {
-
+        String keyword = System.getenv("NEWS_QUERY");
+        String limit = System.getenv("NEWS_DISPLAY");
+        newsService.search(keyword, Integer.parseInt(limit));
     }
 
     public static void main(String[] args) {
