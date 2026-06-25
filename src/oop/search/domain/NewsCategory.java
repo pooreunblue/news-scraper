@@ -1,4 +1,4 @@
-package oop.search.application;
+package oop.search.domain;
 
 // https://developers.naver.com/docs/serviceapi/search/news/news.md#%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0
 public enum NewsCategory {
