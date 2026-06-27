@@ -9,6 +9,8 @@ import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +73,11 @@ public class NaverNewsProvider extends AbstractHttpClient implements NewsProvide
                 String title = cutText(item, "\"title\":\"", "\",\n");
                 String link = cutText(item, "\"link\":\"", "\",\n");
                 String description = cutText(item, "\"description\":\"", "\",\n");
-                // pubDate는 문자열 ""가 추가적으로 들어갈 염려가 없기 때문에 바로 "로 구분
-                String pubDate = cutText(item, "\"description\":\"", "\"");
+                String rawPubDate = cutText(item, "\"pubDate\":\"", "\"");
+                ZonedDateTime pubDate = ZonedDateTime.parse(
+                        rawPubDate,
+                        DateTimeFormatter.RFC_1123_DATE_TIME
+                );
                 NewsResult result = new NewsResult(title, description, link, pubDate);
                 results.add(result);
             }

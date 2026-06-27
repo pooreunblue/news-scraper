@@ -4,6 +4,7 @@ import oop.search.application.NewsPublisher;
 import oop.search.application.NewsMarkdownFormatter;
 import oop.search.domain.NewsResult;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class ConsoleNewsPublisher implements NewsPublisher {
@@ -18,12 +19,12 @@ public class ConsoleNewsPublisher implements NewsPublisher {
                 "창억떡 맛있다",
                 "창억떡 먹어봤니?",
                 "https://naver.com",
-                "2026.12.32"
+                ZonedDateTime.now()
         ), new NewsResult(
                 "창억떡 무봤나",
                 "창억떡 직이네...",
                 "https://naver2.com",
-                "2026.12.33"
+                ZonedDateTime.now()
         )));
     }
 }

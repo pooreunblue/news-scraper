@@ -2,9 +2,13 @@ package oop.search.application;
 
 import oop.search.domain.NewsResult;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public final class NewsMarkdownFormatter {
+
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private NewsMarkdownFormatter() {
     }
@@ -24,7 +28,7 @@ public final class NewsMarkdownFormatter {
                     .append(newsResult.url())
                     .append(")\n")
                     .append("- 발행일자: ")
-                    .append(newsResult.pubDate())
+                    .append(newsResult.pubDate().format(DATE_FORMATTER))
                     .append("\n\n");
         }
 
