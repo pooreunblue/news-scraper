@@ -12,11 +12,16 @@ concurrency:
 permissions:
   contents: read
   issues: write
+  pages: write
+  id-token: write
 
 jobs:
   create-news-issue:
     name: 뉴스 이슈 생성
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     #    timeout-minutes: 10 # 너무 오래 기다릴 시 취소
     steps:
       - name: 저장소 체크아웃
@@ -59,3 +64,16 @@ jobs:
           NEWS_QUERY: ${{ vars.NEWS_QUERY }}
           NEWS_DISPLAY: ${{ vars.NEWS_DISPLAY }}
           NEWS_CATEGORY: ${{ vars.NEWS_CATEGORY }}
+          HTML_OUTPUT_DIR: site
+
+      - name: GitHub Pages 설정
+        uses: actions/configure-pages@v5
+
+      - name: HTML 페이지 업로드
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: GitHub Pages 배포
+        id: deployment
+        uses: actions/deploy-pages@v4

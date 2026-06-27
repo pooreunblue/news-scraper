@@ -1,7 +1,9 @@
 package oop.search.presentation;
 
 import oop.search.application.NewsService;
+import oop.search.application.CompositeNewsPublisher;
 import oop.search.infrastructure.GitHubNewsPublisher;
+import oop.search.infrastructure.HtmlNewsPublisher;
 import oop.search.infrastructure.NaverNewsProvider;
 
 public class GitHubNewsApp {
@@ -20,8 +22,10 @@ public class GitHubNewsApp {
     public static void main(String[] args) {
         NewsService newsService = new NewsService(
                 new NaverNewsProvider(), // 그대로 두고
-//                new ConsoleNewsPublisher()
-                new GitHubNewsPublisher()
+                new CompositeNewsPublisher(
+                        new GitHubNewsPublisher(),
+                        new HtmlNewsPublisher()
+                )
         );
         GitHubNewsApp app = new GitHubNewsApp(newsService);
         app.run();
