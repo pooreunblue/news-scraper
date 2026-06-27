@@ -1,6 +1,7 @@
 package oop.search.infrastructure;
 
 import oop.search.application.NewsPublisher;
+import oop.search.application.NewsMarkdownFormatter;
 import oop.search.domain.NewsResult;
 
 import java.net.URI;
@@ -28,6 +29,7 @@ public class GitHubNewsPublisher extends AbstractHttpClient implements NewsPubli
     public void publish(String topic, List<NewsResult> newsResults) {
 //        httpClient
         String url = endpoint;
+        String markdown = NewsMarkdownFormatter.format(topic, newsResults);
         String payload = """
                 {
                 "title": "%s",
@@ -35,8 +37,8 @@ public class GitHubNewsPublisher extends AbstractHttpClient implements NewsPubli
                 }
                 """.formatted(
                 // %s -> topic. %s -> 한국기준 현재 시간
-                "%s (%s)".formatted(topic, ZonedDateTime.now(ZoneId.of("Asia/Seoul"))),
-                newsResults
+                escapeJson("%s (%s)".formatted(topic, ZonedDateTime.now(ZoneId.of("Asia/Seoul")))),
+                escapeJson(markdown)
         ).trim();
         HttpRequest request = HttpRequest.newBuilder()
 //                .GET()
@@ -58,5 +60,14 @@ public class GitHubNewsPublisher extends AbstractHttpClient implements NewsPubli
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String escapeJson(String value) {
+        return value
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\r", "\\r")
+                .replace("\n", "\\n")
+                .replace("\t", "\\t");
     }
 }
